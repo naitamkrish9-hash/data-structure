@@ -2,6 +2,13 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define MAX 20
+
+char cities[MAX][50];    // store city names
+int graph[MAX][MAX];     // adjacency matrix for flight costs
+int visited[MAX];
+int n;                   // number of cities
+
 
 
 void dfs(int v) {
