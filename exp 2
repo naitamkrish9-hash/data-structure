@@ -1,4 +1,7 @@
 #include <stdio.h>
+void selectionSort(float arr[], int n);
+void bubbleSort(float arr[], int n);
+void display(float arr[], int n);
 
 int main() {
     float percentage[50];
