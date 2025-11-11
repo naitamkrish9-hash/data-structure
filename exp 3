@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-
+#define SIZE 10
 int keys[SIZE];
 char names[SIZE][20];
 long long phones[SIZE];
