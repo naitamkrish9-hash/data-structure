@@ -1,0 +1,131 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+struct Node {
+    int prn;
+    char name[50];
+    struct Node *next;
+};
+
+struct Node* createNode(int prn, char name[]) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->prn = prn;
+    strcpy(newNode->name, name);
+    newNode->next = NULL;
+    return newNode;
+}
+
+struct Node* addPresident(struct Node* head) {
+    int prn; char name[50];
+    printf("Enter PRN and Name of President: ");
+    scanf("%d %s", &prn, name);
+    struct Node* newNode = createNode(prn, name);
+    newNode->next = head;
+    return newNode;
+}
+
+struct Node* addSecretary(struct Node* head) {
+    int prn; char name[50];
+    printf("Enter PRN and Name of Secretary: ");
+    scanf("%d %s", &prn, name);
+    struct Node* newNode = createNode(prn, name);
+
+    if (head == NULL) return newNode;
+
+    struct Node* temp = head;
+    while (temp->next != NULL)
+        temp = temp->next;
+    temp->next = newNode;
+    return head;
+}
+
+struct Node* addMember(struct Node* head) {
+    int prn; char name[50];
+    printf("Enter PRN and Name of Member: ");
+    scanf("%d %s", &prn, name);
+
+    if (head == NULL || head->next == NULL) {
+        printf("Add President and Secretary first!\n");
+        return head;
+    }
+
+    struct Node* newNode = createNode(prn, name);
+    struct Node* temp = head;
+
+    while (temp->next->next != NULL)
+        temp = temp->next;
+
+    newNode->next = temp->next;
+    temp->next = newNode;
+    return head;
+}
+
+struct Node* deletePresident(struct Node* head) {
+    if (head == NULL) return NULL;
+    struct Node* temp = head;
+    head = head->next;
+    free(temp);
+    printf("President deleted.\n");
+    return head;
+}
+
+struct Node* deleteSecretary(struct Node* head) {
+    if (head == NULL || head->next == NULL) return NULL;
+
+    struct Node* temp = head;
+    while (temp->next->next != NULL)
+        temp = temp->next;
+
+    free(temp->next);
+    temp->next = NULL;
+    printf("Secretary deleted.\n");
+    return head;
+}
+
+void display(struct Node* head) {
+    if (head == NULL) {
+        printf("No members in list.\n");
+        return;
+    }
+
+    printf("\n--- Club Members ---\n");
+    while (head != NULL) {
+        printf("PRN: %d\tName: %s\n", head->prn, head->name);
+        head = head->next;
+    }
+}
+
+int count(struct Node* head) {
+    int c = 0;
+    while (head) {
+        c++;
+        head = head->next;
+    }
+    return c;
+}
+
+int main() {
+    struct Node* head = NULL;
+    int choice;
+
+    while (1) {
+        printf("\n==== Pinnacle Club Menu ====\n");
+        printf("1. Add President\n2. Add Secretary\n3. Add Member\n4. Delete President\n5. Delete Secretary\n6. Display Members\n7. Count Members\n8. Exit\n");
+        printf("Enter choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1: head = addPresident(head); break;
+            case 2: head = addSecretary(head); break;
+            case 3: head = addMember(head); break;
+            case 4: head = deletePresident(head); break;
+            case 5: head = deleteSecretary(head); break;
+            case 6: display(head); break;
+            case 7: printf("Total Members: %d\n", count(head)); break;
+            case 8: printf("Exiting..."); exit(0);
+            default: printf("Invalid choice!\n");
+        }
+    }
+    return 0;
+}
